@@ -191,11 +191,16 @@ class MainMenuState extends MusicBeatState
     if (hasUpgraded)
     {
       #if FEATURE_OPEN_URL
-      // In order to prevent popup blockers from triggering,
-      // we need to open the link as an immediate result of a keypress event,
-      // so we can't wait for the flicker animation to complete.
-      var hasPopupBlocker:Bool = #if web true #else false #end;
-      createMenuItem('merch', 'mainmenu/merch', selectMerch, hasPopupBlocker);
+      function selectDonate()
+      {
+        WindowUtil.openURL(Constants.URL_ITCH);
+      }
+
+      function selectMerch()
+      {
+        Referral.doMerchReferral();
+        uiStateMachine.transition(Idle);
+      }
       #end
     }
     else
@@ -229,7 +234,7 @@ class MainMenuState extends MusicBeatState
     {
       menuItem.x = 50 + (menuItem.width * 0.5);
       menuItem.y = top + spacing * index;
-      menuItem.scrollFactor.x = #if !mobile 0.0 #else -0.5 #end; // we want a lil scroll on mobile, for the cute gyro effect
+      menuItem.scrollFactor.x = #if !mobile 0.0 #else 0.0 #end; // we want a lil scroll on mobile, for the cute gyro effect
       // This one affects how much the menu items move when you scroll between them.
       menuItem.scrollFactor.y = 0.4;
 
@@ -388,31 +393,26 @@ class MainMenuState extends MusicBeatState
     super.closeSubState();
   }
 
-  static inline var LEFT_EDGE_X:Float = 50; // same 50 you used in create()
-
-function onMenuItemChange(selected:MenuListItem)
-{
-  if (#if mobile ControlsHandler.usingExternalInputDevice #else true #end)
+  function onMenuItemChange(selected:MenuListItem)
   {
-    camFollow.setPosition(selected.getGraphicMidpoint().x, selected.getGraphicMidpoint().y);
-  }
+    // Keep camera follow behavior (optional)
+    #if mobile
+    if (ControlsHandler.usingExternalInputDevice)
+    {
+    #else
+    if (true)
+    {
+    #end
+      camFollow.setPosition(selected.getGraphicMidpoint().x, selected.getGraphicMidpoint().y);
+    }
 
-  var sel:AtlasMenuItem = cast selected;
-
-  var leftEdge:Float = LEFT_EDGE_X;
-  for (item in menuItems)
-  {
-    if (item == null || item == sel) continue;
-    leftEdge = item.x - (item.width * 0.5);
-    break;
+    // Anchor all items so their LEFT edge is at LEFT_EDGE_X
+    for (item in menuItems)
+    {
+      if (item == null) continue;
+      item.x = 50 + (item.width * 0.5); // <-- note the +0.5
+    }
   }
-
-  for (item in menuItems)
-  {
-    if (item == null) continue;
-    item.x = leftEdge + (item.width * -0.5);
-  }
-}
 
   #if RE_OPEN_URL
   function selectDonate()
@@ -647,4 +647,3 @@ function onMenuItemChange(selected:MenuListItem)
     FlxG.switchState(() -> new TitleState());
   }
 }
-FEATU
