@@ -227,9 +227,9 @@ class MainMenuState extends MusicBeatState
 
     for (index => menuItem in menuItems)
     {
-      menuItem.x = FlxG.width / 2;
+      menuItem.x = 50 + (menuItem.width * 0.5);
       menuItem.y = top + spacing * index;
-      menuItem.scrollFactor.x = #if !mobile 0.0 #else 0.4 #end; // we want a lil scroll on mobile, for the cute gyro effect
+      menuItem.scrollFactor.x = #if !mobile 0.0 #else -0.5 #end; // we want a lil scroll on mobile, for the cute gyro effect
       // This one affects how much the menu items move when you scroll between them.
       menuItem.scrollFactor.y = 0.4;
 
@@ -388,13 +388,33 @@ class MainMenuState extends MusicBeatState
     super.closeSubState();
   }
 
-  function onMenuItemChange(selected:MenuListItem)
+  static inline var LEFT_EDGE_X:Float = 50; // same 50 you used in create()
+
+function onMenuItemChange(selected:MenuListItem)
+{
+  if (#if mobile ControlsHandler.usingExternalInputDevice #else true #end)
   {
-    if (#if mobile ControlsHandler.usingExternalInputDevice #else true #end) camFollow.setPosition(selected.getGraphicMidpoint().x,
-      selected.getGraphicMidpoint().y);
+    camFollow.setPosition(selected.getGraphicMidpoint().x, selected.getGraphicMidpoint().y);
   }
 
-  #if FEATURE_OPEN_URL
+  var sel:AtlasMenuItem = cast selected;
+
+  var leftEdge:Float = LEFT_EDGE_X;
+  for (item in menuItems)
+  {
+    if (item == null || item == sel) continue;
+    leftEdge = item.x - (item.width * 0.5);
+    break;
+  }
+
+  for (item in menuItems)
+  {
+    if (item == null) continue;
+    item.x = leftEdge + (item.width * -0.5);
+  }
+}
+
+  #if RE_OPEN_URL
   function selectDonate()
   {
     WindowUtil.openURL(Constants.URL_ITCH);
@@ -627,3 +647,4 @@ class MainMenuState extends MusicBeatState
     FlxG.switchState(() -> new TitleState());
   }
 }
+FEATU
