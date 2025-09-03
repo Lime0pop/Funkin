@@ -172,24 +172,24 @@ class Constants
   /**
    * Default difficulty for charts.
    */
-  public static final DEFAULT_DIFFICULTY:String = 'normal';
+  public static final DEFAULT_DIFFICULTY:String = 'remix';
 
   /**
    * Default list of difficulties for charts.
    * Assumes no Erect mode, etc.
    */
-  public static final DEFAULT_DIFFICULTY_LIST:Array<String> = ['easy', 'normal', 'hard'];
+  public static final DEFAULT_DIFFICULTY_LIST:Array<String> = ['remix'];
 
   /**
    * Default list of difficulties for Erect mode.
    */
-  public static final DEFAULT_DIFFICULTY_LIST_ERECT:Array<String> = ['erect', 'nightmare'];
+  public static final DEFAULT_DIFFICULTY_LIST_ERECT:Array<String> = ['mixtape'];
 
   /**
    * List of all difficulties used by the base game.
    * Includes Erect and Nightmare.
    */
-  public static final DEFAULT_DIFFICULTY_LIST_FULL:Array<String> = ['easy', 'normal', 'hard', 'erect', 'nightmare'];
+  public static final DEFAULT_DIFFICULTY_LIST_FULL:Array<String> = ['remix', 'mixtape'];
 
   /**
    * Default player character for charts.

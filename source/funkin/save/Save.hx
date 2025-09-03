@@ -802,7 +802,7 @@ class Save implements ConsoleClass
 
     if (difficultyList == null)
     {
-      difficultyList = ['easy', 'normal', 'hard'];
+      difficultyList = ['remix'];
     }
     for (difficulty in difficultyList)
     {
@@ -990,7 +990,7 @@ class Save implements ConsoleClass
   {
     if (difficultyList == null)
     {
-      difficultyList = ['easy', 'normal', 'hard'];
+      difficultyList = ['remix'];
     }
 
     if (variation == null) variation = '';

@@ -35,7 +35,7 @@ class StoryMenuState extends MusicBeatState
   static final DEFAULT_BACKGROUND_COLOR:FlxColor = FlxColor.fromString('#F9CF51');
   static final BACKGROUND_HEIGHT:Int = 400;
 
-  var currentDifficultyId:String = 'normal';
+  var currentDifficultyId:String = 'remix';
 
   var currentLevelId:String = 'tutorial';
   var currentLevel:Level;
